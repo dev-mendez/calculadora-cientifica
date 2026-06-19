@@ -1,0 +1,562 @@
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --font-fluent: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  --bg-app: #1c1c1c;
+  --bg-calculator: #202020;
+  --bg-button-num: #3b3b3b;
+  --bg-button-num-hover: #454545;
+  --bg-button-num-active: #323232;
+  --bg-button-spec: #2d2d2d;
+  --bg-button-spec-hover: #373737;
+  --bg-button-spec-active: #242424;
+  --bg-button-equal: #cf95e5;
+  --bg-button-equal-hover: #c384da;
+  --bg-button-equal-active: #b273ca;
+  --color-text: #ffffff;
+  --color-text-dim: #a0a0a0;
+  --color-text-disabled: #555555;
+  --border-radius: 4px;
+  --border-color: rgba(255, 255, 255, 0.07);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background-color: #0c0c0c;
+  font-family: var(--font-fluent);
+  color: var(--color-text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: auto;
+}
+
+/* Base layout centered container */
+#root {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Windows 11 App Container */
+.win11-window {
+  width: 100%;
+  max-width: 800px;
+  min-height: 680px;
+  background-color: var(--bg-app);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Titlebar */
+.titlebar {
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  background-color: transparent;
+  font-size: 12px;
+  font-weight: 400;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titlebar-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.titlebar-controls {
+  display: flex;
+  height: 100%;
+  margin-right: -12px;
+}
+
+.titlebar-btn {
+  width: 46px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.titlebar-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.titlebar-btn.close:hover {
+  background-color: #e81123;
+}
+
+/* Main workspace - dual column if wide enough */
+.calculator-workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Left panel: Calculator itself */
+.calculator-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+/* Header inside calculator (hamburger menu, title, history toggle button) */
+.calc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.calc-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.menu-btn, .history-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.menu-btn:hover, .history-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.calc-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Screen / Display */
+.calc-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-height: 100px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  text-align: right;
+  word-break: break-all;
+  position: relative;
+}
+
+.expression-display {
+  font-size: 14px;
+  color: var(--color-text-dim);
+  min-height: 20px;
+  margin-bottom: 4px;
+  font-weight: 400;
+}
+
+.value-display {
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1.1;
+  transition: font-size 0.1s;
+  max-width: 100%;
+}
+
+/* Top bar below screen (DEG, F-E toggles) */
+.calc-toggles {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding: 0 8px;
+}
+
+.toggle-item {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.15s;
+}
+
+.toggle-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.toggle-item.active {
+  color: var(--bg-button-equal);
+}
+
+/* Memory functions row */
+.memory-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.memory-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 0;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: center;
+  transition: background-color 0.15s;
+}
+
+.memory-btn:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.memory-btn:disabled {
+  color: var(--color-text-disabled);
+  cursor: default;
+}
+
+/* Trigonometry & Function drop downs */
+.dropdown-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-trigger {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.15s;
+}
+
+.dropdown-trigger:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #2b2b2b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  width: 260px;
+  margin-top: 4px;
+}
+
+.dropdown-item {
+  background: #3b3b3b;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--color-text);
+  padding: 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.1s;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Main button grid */
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+  flex: 1;
+}
+
+.calc-btn {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--color-text);
+  background-color: var(--bg-button-spec);
+  cursor: pointer;
+  outline: none;
+  min-height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.08s, transform 0.05s;
+}
+
+.calc-btn:hover {
+  background-color: var(--bg-button-spec-hover);
+}
+
+.calc-btn:active {
+  background-color: var(--bg-button-spec-active);
+  transform: scale(0.98);
+}
+
+.calc-btn.number {
+  background-color: var(--bg-button-num);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.calc-btn.number:hover {
+  background-color: var(--bg-button-num-hover);
+}
+
+.calc-btn.number:active {
+  background-color: var(--bg-button-num-active);
+}
+
+.calc-btn.equal {
+  background-color: var(--bg-button-equal);
+  color: #000000;
+  font-weight: 600;
+  font-size: 18px;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.calc-btn.equal:hover {
+  background-color: var(--bg-button-equal-hover);
+}
+
+.calc-btn.equal:active {
+  background-color: var(--bg-button-equal-active);
+}
+
+/* History & Memory Side Panel */
+.side-panel {
+  width: 280px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(20, 20, 20, 0.4);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, width 0.3s ease;
+  overflow: hidden;
+}
+
+.side-panel-header {
+  display: flex;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.side-panel-tab {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-dim);
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.side-panel-tab.active {
+  color: var(--color-text);
+}
+
+.side-panel-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--bg-button-equal);
+  border-radius: 1px;
+}
+
+.side-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.history-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 18px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: background-color 0.15s;
+}
+
+.history-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.history-item-expr {
+  font-size: 13px;
+  color: var(--color-text-dim);
+  margin-bottom: 4px;
+}
+
+.history-item-val {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.memory-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.memory-list-val {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.memory-list-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.mem-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-dim);
+  font-size: 11px;
+  padding: 4px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.mem-action-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+}
+
+.empty-panel-text {
+  color: var(--color-text-dim);
+  font-size: 13px;
+  text-align: left;
+}
+
+.clear-panel-btn {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  color: var(--color-text-dim);
+  cursor: pointer;
+  padding: 8px;
+  margin: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.clear-panel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+}
+
+/* Custom Scrollbar for modern feeling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  body {
+    padding: 0;
+  }
+  .win11-window {
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+  .side-panel {
+    position: absolute;
+    right: 0;
+    top: 36px;
+    bottom: 0;
+    z-index: 15;
+    background-color: var(--bg-app);
+    transform: translateX(100%);
+  }
+  .side-panel.open {
+    transform: translateX(0);
+  }
+}
